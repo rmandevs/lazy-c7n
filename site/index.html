@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>lazy-c7n: a terminal UI for Cloud Custodian</title>
+  <meta name="description" content="lazy-c7n is a keyboard-driven terminal UI that wraps the Cloud Custodian CLI. Early alpha: the scaffold is done, the features are being built milestone by milestone.">
+  <meta name="color-scheme" content="dark">
+  <meta name="theme-color" content="#1e1e1e">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="lazy-c7n: a terminal UI for Cloud Custodian">
+  <meta property="og:description" content="Cloud Custodian, without memorising a single flag. Early alpha, built in the open.">
+  <meta property="og:url" content="https://rmandevs.github.io/lazy-c7n/">
+  <meta property="og:image" content="https://rmandevs.github.io/lazy-c7n/assets/policies.png">
+  <meta property="og:image:alt" content="The lazy-c7n Policies screen in a terminal">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/jetbrains-mono-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/site.css">
+  <script src="assets/site.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <header class="tabs">
+    <div class="wrap tabs-row">
+      <a class="brand" href="#top" aria-label="lazy-c7n, back to top">lazy-c7n</a>
+      <nav aria-label="Sections">
+        <ul>
+          <li><a href="#why" data-tab>why</a></li>
+          <li><a href="#status" data-tab>status</a></li>
+          <li><a href="#install" data-tab>install</a></li>
+          <li><a href="#principles" data-tab>principles</a></li>
+        </ul>
+      </nav>
+      <a class="tabs-gh" href="https://github.com/rmandevs/lazy-c7n">github</a>
+    </div>
+  </header>
+
+  <main id="main" class="wrap">
+
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <p class="eyebrow">terminal UI for the <code>custodian</code> CLI <span class="sep" aria-hidden="true">•</span> early alpha</p>
+      <h1 id="hero-title">lazy-c7n<span class="cursor" aria-hidden="true"></span></h1>
+      <p class="pitch">Cloud Custodian, without memorising a single flag.</p>
+      <p class="lede">
+        Browse policies, validate, dry-run, run, and read results and logs from one keyboard-driven screen.
+        In the spirit of <code>lazygit</code> and <code>lazydocker</code>. That is the plan.
+        Today the scaffold is built and tested, and <a href="#status">the rest is on the roadmap</a>.
+      </p>
+
+      <div class="cmd" data-copy-block>
+        <div class="cmd-head">
+          <span class="cmd-label">build from source</span>
+          <button class="copy" type="button" data-copy hidden>copy</button>
+        </div>
+        <pre tabindex="0" aria-label="Build commands"><code><span class="prompt" aria-hidden="true">$ </span>git clone https://github.com/rmandevs/lazy-c7n.git
+<span class="prompt" aria-hidden="true">$ </span>cd lazy-c7n &amp;&amp; go build -o lazyc7n ./cmd/lazyc7n &amp;&amp; ./lazyc7n</code></pre>
+      </div>
+
+      <p class="actions">
+        <a class="btn btn-primary" href="https://github.com/rmandevs/lazy-c7n">View on GitHub</a>
+        <a class="btn" href="#status">See what works today</a>
+      </p>
+
+      <figure class="shot">
+        <div class="shot-scroll" tabindex="0" role="group" aria-label="Screenshot, scrolls sideways on small screens">
+        <img src="assets/policies.png" width="1674" height="504"
+             alt="lazy-c7n in a terminal: a tab row with Policies, Runs, Resources, Schema and Jobs, a Policies panel listing the policy dir ./policies, and a status line with a green DRY badge and key hints.">
+        </div>
+        <figcaption>Real screenshot of the current build. The Policies tab shows your configured policy dirs and nothing else yet.</figcaption>
+      </figure>
+    </section>
+
+    <section class="panel" id="why" aria-labelledby="why-title">
+      <h2 class="panel-title" id="why-title" tabindex="-1"><span class="num" aria-hidden="true">1</span>why</h2>
+      <div class="cols">
+        <div class="prose">
+          <p>You already write c7n YAML. The loop around it is a pile of long commands, retyped with small changes all day.</p>
+          <p>lazy-c7n is meant to turn that loop into a few keys: one tab each for policies, runs, matched resources, the c7n schema and jobs, with the exact <code>custodian</code> command always visible.</p>
+          <p class="note">It does not do that yet. Today you get the shell of the app. The <a href="#status">status</a> section lists exactly what works.</p>
+        </div>
+        <div class="cmd cmd-plain">
+          <div class="cmd-head"><span class="cmd-label">the loop, by hand</span></div>
+          <pre tabindex="0" aria-label="The commands lazy-c7n aims to replace"><code><span class="prompt" aria-hidden="true">$ </span>custodian validate ...
+<span class="prompt" aria-hidden="true">$ </span>custodian run --dryrun -s ./out \
+    -p 's3-*' -r us-east-1 ...
+<span class="prompt" aria-hidden="true">$ </span>cat out/*/resources.json | jq ...
+<span class="dim"># edit the policy, then do it all again</span></code></pre>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="status" aria-labelledby="status-title">
+      <h2 class="panel-title" id="status-title" tabindex="-1"><span class="num" aria-hidden="true">2</span>status</h2>
+      <p class="prose">
+        Early alpha. One of six milestones is done. Each row below is a slice that ships on its own.
+        Nothing marked next or planned exists in the binary today.
+      </p>
+
+      <ol class="miles" aria-label="Milestones">
+        <li class="mile is-done">
+          <span class="box" aria-hidden="true">[x]</span>
+          <span class="mid">M0</span>
+          <span class="what">Scaffold: config loading, tabs, key help, clean terminal setup and teardown, CI on Linux, macOS and Windows</span>
+          <span class="state">done</span>
+        </li>
+        <li class="mile is-next">
+          <span class="box" aria-hidden="true">[&gt;]</span>
+          <span class="mid">M1</span>
+          <span class="what">Read-only browser: policy tree, YAML view, runs and resources from an existing output dir</span>
+          <span class="state">next</span>
+        </li>
+        <li class="mile">
+          <span class="box" aria-hidden="true">[ ]</span>
+          <span class="mid">M2</span>
+          <span class="what">Validate and dry-run with live log streaming and run history</span>
+          <span class="state">planned</span>
+        </li>
+        <li class="mile">
+          <span class="box" aria-hidden="true">[ ]</span>
+          <span class="mid">M3</span>
+          <span class="what">Live runs with preflight and typed confirmation</span>
+          <span class="state">planned</span>
+        </li>
+        <li class="mile">
+          <span class="box" aria-hidden="true">[ ]</span>
+          <span class="mid">M4</span>
+          <span class="what">Schema browser, fuzzy search, <code>$EDITOR</code> integration, themes</span>
+          <span class="state">planned</span>
+        </li>
+        <li class="mile">
+          <span class="box" aria-hidden="true">[ ]</span>
+          <span class="mid">M5</span>
+          <span class="what">Prebuilt binaries, Homebrew, AUR, Scoop</span>
+          <span class="state">planned</span>
+        </li>
+      </ol>
+
+      <figure class="shot shot-inner">
+        <div class="shot-scroll" tabindex="0" role="group" aria-label="Screenshot, scrolls sideways on small screens">
+        <img src="assets/help.png" width="1674" height="503" loading="lazy"
+             alt="The Runs tab of lazy-c7n showing the text 'not implemented yet', with the expanded key help in the status line: tab or l for next screen, shift+tab or h for previous screen, question mark for more keys, q to quit.">
+        </div>
+        <figcaption>Also a real screenshot: the Runs tab with key help expanded. Every tab except Policies says "not implemented yet".</figcaption>
+      </figure>
+
+      <p class="prose more">
+        The full design is in
+        <a href="https://github.com/rmandevs/lazy-c7n/blob/main/docs/SPEC.md">docs/SPEC.md</a>.
+        This is the best moment to influence it:
+        <a href="https://github.com/rmandevs/lazy-c7n/issues">open an issue</a>
+        with the workflow you wish a c7n TUI made easier, or tell us what breaks on your OS, terminal or c7n version.
+      </p>
+    </section>
+
+    <section class="panel" id="install" aria-labelledby="install-title">
+      <h2 class="panel-title" id="install-title" tabindex="-1"><span class="num" aria-hidden="true">3</span>install</h2>
+      <p class="prose">There are no prebuilt releases yet, so build from source. It takes about a minute.</p>
+
+      <div class="steps">
+        <div class="step">
+          <h3><span class="step-n" aria-hidden="true">1</span>Requirements</h3>
+          <ul class="plain">
+            <li><a href="https://go.dev/dl/">Go</a> 1.26 or newer.</li>
+            <li><a href="https://cloudcustodian.io/docs/quickstart/index.html">Cloud Custodian</a>, with <code>custodian</code> on your <code>PATH</code>.</li>
+          </ul>
+          <div class="cmd" data-copy-block>
+            <div class="cmd-head">
+              <span class="cmd-label">custodian, if you do not have it</span>
+              <button class="copy" type="button" data-copy hidden>copy</button>
+            </div>
+            <pre tabindex="0" aria-label="Install Cloud Custodian"><code><span class="prompt" aria-hidden="true">$ </span>pipx install c7n</code></pre>
+          </div>
+        </div>
+
+        <div class="step">
+          <h3><span class="step-n" aria-hidden="true">2</span>Build and run</h3>
+          <div class="cmd" data-copy-block>
+            <div class="cmd-head">
+              <span class="cmd-label">shell</span>
+              <button class="copy" type="button" data-copy hidden>copy</button>
+            </div>
+            <pre tabindex="0" aria-label="Build and run commands"><code><span class="prompt" aria-hidden="true">$ </span>git clone https://github.com/rmandevs/lazy-c7n.git
+<span class="prompt" aria-hidden="true">$ </span>cd lazy-c7n
+<span class="prompt" aria-hidden="true">$ </span>go build -o lazyc7n ./cmd/lazyc7n
+<span class="prompt" aria-hidden="true">$ </span>./lazyc7n</code></pre>
+          </div>
+          <p class="prose small">
+            Hop between screens with <kbd>Tab</kbd> and <kbd>Shift+Tab</kbd>, press <kbd>?</kbd> for keys, <kbd>q</kbd> to quit.
+            Flags: <code>-config &lt;file&gt;</code> to use a specific config file, <code>-version</code> to print the version.
+          </p>
+        </div>
+
+        <div class="step">
+          <h3><span class="step-n" aria-hidden="true">3</span>Configure (optional)</h3>
+          <p class="prose small">
+            Config lives in <code>~/.config/lazyc7n/config.toml</code> (it follows <code>$XDG_CONFIG_HOME</code>).
+            A <code>.lazyc7n.toml</code> in the current directory overrides it.
+            The file is loaded and checked today. The runner and safety settings start to matter when runs arrive in M2 and M3.
+          </p>
+          <div class="cmd" data-copy-block>
+            <div class="cmd-head">
+              <span class="cmd-label">config.toml</span>
+              <button class="copy" type="button" data-copy hidden>copy</button>
+            </div>
+            <pre tabindex="0" aria-label="Example config file"><code><span class="k">policy_dirs</span> = [<span class="s">"./policies"</span>]
+
+<span class="sec">[runner]</span>
+<span class="k">kind</span> = <span class="s">"binary"</span>          <span class="dim"># binary | docker | command</span>
+<span class="k">custodian</span> = <span class="s">"custodian"</span>  <span class="dim"># or a path, e.g. ".venv/bin/custodian"</span>
+
+<span class="sec">[safety]</span>
+<span class="k">default_dry_run</span> = <span class="s">true</span>
+<span class="k">confirm_live</span> = <span class="s">"type-name"</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="panel" id="principles" aria-labelledby="principles-title">
+      <h2 class="panel-title" id="principles-title" tabindex="-1"><span class="num" aria-hidden="true">4</span>principles</h2>
+      <p class="prose">The rules the project is held to, including for the parts that are not built yet.</p>
+      <dl class="rules">
+        <div class="rule">
+          <dt>Thin wrapper</dt>
+          <dd>The real <code>custodian</code> executable does all the work. lazy-c7n never reimplements c7n logic, and it shows you the exact command it runs.</dd>
+        </div>
+        <div class="rule">
+          <dt>Safe by default</dt>
+          <dd>Dry-run comes first. Live runs will sit behind a typed confirmation that cannot be skipped by accident, with the actions that will execute spelled out.</dd>
+        </div>
+        <div class="rule">
+          <dt>Local only</dt>
+          <dd>One binary. No server, no database, no telemetry. Credentials come from your environment and are never stored, logged or displayed.</dd>
+        </div>
+        <div class="rule">
+          <dt>Lenient parsing</dt>
+          <dd>Unknown fields in policies and output are ignored, so the tool keeps working as c7n evolves.</dd>
+        </div>
+        <div class="rule">
+          <dt>Open source, non-profit</dt>
+          <dd>MIT OR Apache-2.0, at your option. Contributions are welcome. Read the spec first.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <footer class="foot">
+      <p>
+        <strong>Disclaimer.</strong>
+        lazy-c7n is an independent community project. It is not affiliated with, endorsed by, or sponsored by the
+        Cloud Custodian project or the CNCF. "Cloud Custodian" and "c7n" are used only to describe compatibility.
+      </p>
+      <p>
+        You run policies with your own credentials and at your own risk. Live runs can modify or delete cloud resources.
+        Review dry-run output first. The software is provided "as is", without warranty of any kind.
+      </p>
+      <p class="foot-links">
+        Licensed
+        <a href="https://github.com/rmandevs/lazy-c7n/blob/main/LICENSE-MIT">MIT</a> OR
+        <a href="https://github.com/rmandevs/lazy-c7n/blob/main/LICENSE-APACHE">Apache-2.0</a>
+        <span class="sep" aria-hidden="true">•</span>
+        <a href="https://github.com/rmandevs/lazy-c7n">source on GitHub</a>
+        <span class="sep" aria-hidden="true">•</span>
+        set in JetBrains Mono (<a href="assets/fonts/OFL.txt">OFL 1.1</a>)
+      </p>
+    </footer>
+  </main>
+
+  <div class="statusline" role="contentinfo" aria-label="Status line">
+    <div class="wrap status-row">
+      <span class="dry" title="Dry-run is the default in the app. This page changes nothing either.">DRY</span>
+      <span class="status-text"><span class="status-alpha">early alpha <span class="sep" aria-hidden="true">•</span> </span>1 of 6 milestones done</span>
+      <span class="hints" data-hints hidden>
+        <span class="hint"><kbd>1</kbd>-<kbd>4</kbd> section</span>
+        <span class="sep" aria-hidden="true">•</span>
+        <span class="hint"><kbd>h</kbd>/<kbd>l</kbd> prev/next</span>
+        <span class="sep" aria-hidden="true">•</span>
+        <span class="hint"><kbd>g</kbd> github</span>
+      </span>
+      <button class="help-btn" type="button" data-help-open hidden aria-haspopup="dialog"><kbd>?</kbd> keys</button>
+      <a class="status-gh" href="https://github.com/rmandevs/lazy-c7n">github</a>
+    </div>
+  </div>
+
+  <dialog class="help" id="help" aria-labelledby="help-title">
+    <h2 class="panel-title" id="help-title">keys</h2>
+    <p class="prose small">This page takes the same kind of keys as the app.</p>
+    <dl class="keys">
+      <div><dt><kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd></dt><dd>why, status, install, principles</dd></div>
+      <div><dt><kbd>l</kbd> / <kbd>h</kbd></dt><dd>next / previous section</dd></div>
+      <div><dt><kbd>0</kbd></dt><dd>back to top</dd></div>
+      <div><dt><kbd>g</kbd></dt><dd>open the GitHub repo</dd></div>
+      <div><dt><kbd>?</kbd></dt><dd>toggle this help</dd></div>
+      <div><dt><kbd>esc</kbd></dt><dd>close</dd></div>
+    </dl>
+    <p class="prose small dim"><kbd>Tab</kbd> is left alone: it moves focus as in any web page.</p>
+    <form method="dialog"><button class="btn" type="submit">close</button></form>
+  </dialog>
+</body>
+</html>
