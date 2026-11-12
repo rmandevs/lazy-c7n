@@ -8,6 +8,8 @@ A fast, keyboard-driven terminal UI for [`custodian`](https://cloudcustodian.io/
 
 *In the spirit of `lazygit` and `lazydocker`.*
 
+[Website](https://rmandevs.github.io/lazy-c7n/)
+
 [![CI](https://github.com/mr-lk-lf/lazy-c7n/actions/workflows/ci.yml/badge.svg)](https://github.com/mr-lk-lf/lazy-c7n/actions/workflows/ci.yml)
 ![Go](https://img.shields.io/badge/Go-1.26+-00ADD8?logo=go&logoColor=white)
 ![License](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue)
